@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>chat</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            /* padding-bottom: 3rem; */
+            font-family: "Inter", sans-serif;
+            height: 100vh;
+        }
+
+        .divHide{
+            display: none;
+        }
+
+        #container {
+            display: flex;
+        }
+
+        #chatusers{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #chat-list {
+            width: 25%;
+            height: 100vh;
+            border-right: 1px solid rgb(85, 85, 85);
+        }
+
+        #chat-list>h3{
+            margin: 0;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        #chat-list>form{
+            width: 100%;
+            display: flex;
+            gap: 4px;
+            margin: 4px 8px;
+        }
+
+
+        #chat-list>form>input{
+            padding: 6px;
+            width: 60%;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        #chat-list>form>button{
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: black;
+            color: white;
+        }
+
+        #chat-list>div{
+            display: flex;
+            /* gap: 15px; */
+            /* justify-content: space-around; */
+
+        }
+
+        
+
+        #chat-container{
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatname{
+            padding: 10px;
+            border-bottom: 1px solid #4e4e4e;
+        }
+
+        #chatname>h1{
+            margin: 0;
+            font-size: 20px;
+            text-transform: capitalize;
+        }
+
+        #chatList{
+            width: 100%;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chatList>li{
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 0.75rem 1rem;
+            border: 1px solid #0d6efd;
+            border-radius: 6px;
+        }
+
+        #chatList>li:hover{
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .message-container{
+            flex-grow: 1;
+            height: 100%;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #messages>li {
+            width: 100%;
+            display: flex;
+        }
+
+        #receivermessage{
+            margin: 6px;
+            padding: 0.5rem 1rem;
+            background: #dbdbdb;
+            border-radius: 15px 15px 15px 0;
+            justify-items:flex-start;
+        }
+
+        #sendermessage{
+            margin: 6px;
+            padding: 0.5rem 1rem;
+            background: #dbdbdb;
+            justify-items:flex-end;
+            border-radius: 15px 15px 0 15px;
+        }
+
+        #form {
+            background: #dbdbdb;
+            padding: 0.25rem;
+            display: flex;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        #input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 6px;
+            margin: 0.25rem;
+            font-size: 18px;
+        }
+
+        #input:focus {
+            outline: none;
+        }
+
+        #form>button {
+            background: #0d6efd;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 18px;
+        }
+
+        #no-chat{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+
+        
+    </style>
+</head>
+
+<body>
+    <!-- <div id="chatusers">
+        <h1>Select User</h1>
+    </div> -->
+    <div id="container">
+        <div id="chat-list">
+            <h3>Chat Users</h3>
+            <div class="mx-2 btn-group btn-group-justified ">
+                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#usermodal">New User</button>
+                <button class="btn btn-outline-primary">New Room</button>
+            </div>
+            <div class="m-2">
+                <button class="w-100 btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#newChatmodal">Create New Chat</button>
+            </div>
+            <div class="mx-2" id="chatroom">
+                <h3>Select Chat Room</h3>
+                <button class="btn btn-outline-primary">Chat Room 1</button>
+            </div>
+
+            <div class="mt-3 mx-2">
+                <ul id="chatList"></ul>
+            </div>
+        </div>
+        
+        
+
+        <div id="chat-container">
+            <!-- <div id="chatname">
+                <h1>Chat Name</h1>
+            </div>
+            <div class="message-container">
+                <ul id="messages"></ul>
+            </div>
+            <div class="message-form">
+                <form id="form" action="">
+                    <input id="input" autocomplete="off" /><button>Send</button>
+                </form>
+            </div>     -->
+            <div id="no-chat">
+                <h3 class="">Select chat to start conversation</h3>
+            </div>
+        </div>
+
+
+        
+    </div>
+
+    <div class="modal fade" id="usermodal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="user-form" autocomplete="off">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="userModalLabel">Create New User</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="recipient-name" class="col-form-label">Username:</label>
+                      <input type="text" class="form-control" id="user-name" required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newChatmodal" tabindex="-1" aria-labelledby="newChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="user-form" autocomplete="off">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="userModalLabel">Create New User</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="new-chat" class="col-form-label">Select user to start conversation</label>
+                      <select id=""></select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          </form>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        let socket = io()
+        let home_user = null
+        // let messages = document.getElementById('messages')
+        // let form = document.getElementById('form');
+        let container = document.getElementById('container')
+        let input = document.getElementById('input');
+        let userModal = new bootstrap.Modal(document.getElementById('usermodal'))
+        let userForm = document.getElementById('user-form')
+        let userNameInput = document.getElementById('user-name')
+        let chats = [] 
+        let chatList = document.getElementById('chatList')
+        let chatsListData = JSON.parse(localStorage.getItem('chatList')) || []
+        let selectedChat
+        let chatName = document.getElementById('chatName')
+        let chatContainer = document.getElementById('chat-container')
+        let messageHistory = JSON.parse(localStorage.getItem('messageHistory')) || []
+        let chatusers = document.getElementById('chatusers')
+
+        console.log(home_user)
+
+        // if(home_user===null){
+        //     container.style.display = "none"
+        //     container.className = 'hide'
+        //     let usersDiv = document.createElement('div')
+        //     usersDiv.style = 'display:flex'
+        //     let userList = chatsListData.map(user =>{
+        //         let userDiv = document.createElement('button')
+        //         userDiv.textContent = user.username
+        //         userDiv.classList = 'btn btn-outline-primary mx-2 p-2'
+        //         userDiv.addEventListener('click',()=>{
+        //             home_user = user
+        //             console.log(home_user)
+        //             chatusers.classList.add("hide")
+        //             container.classList.remove("hide")
+        //         })
+
+        //         usersDiv.appendChild(userDiv)
+                
+        //     })
+        //     chatusers.appendChild(usersDiv)
+        // }
+
+        let chatNameDiv = document.createElement('div')
+            chatNameDiv.id = 'chatname'
+            let chatNameh1 = document.createElement('h1')
+            // chatNameh1.innerText = selectedChat.username
+            chatNameDiv.appendChild(chatNameh1)
+            
+            let messagesContainer = document.createElement('div')
+            messagesContainer.className = 'message-container'
+            let messages = document.createElement('ul')
+            messages.id = 'messages'
+            messagesContainer.appendChild(messages)
+
+            let messageForm = document.createElement('message-form')
+            messageForm.className  = 'message-form'
+            let form = document.createElement('form')
+            form.id = 'form'
+            let formInput = document.createElement('input')
+            formInput.id = 'input'
+            formInput.autocomplete = 'off'
+            formInput.placeholder = 'Enter message'
+            let formButton = document.createElement('button')
+            formButton.innerText = 'Send'
+            form.append(formInput,formButton)
+            messageForm.appendChild(form)
+
+
+        // if(chatsListData){
+        //     chats.push(...chatsListData)
+        //     chats.forEach(chat=>{
+        //         let chatItem = document.createElement('li')
+        //         chatItem.textContent = chat.username
+        //         chatItem.id = chat.id
+        //         chatItem.addEventListener('click',()=>{
+        //             if(selectedChat){
+        //                 selectedChat = null
+        //                 selectedChat = chat
+        //                 setSelectedChat(selectedChat)
+        //             }else{
+        //                 selectedChat = chat
+        //                 setSelectedChat(selectedChat)
+        //             }
+        //         })
+        //         chatList.appendChild(chatItem)
+        //     })
+        // }
+
+
+
+        function setSelectedChat(selectedChat){
+            if(chatContainer.hasChildNodes()){
+                chatContainer.innerHTML = ''
+            }
+            chatNameh1.innerText = selectedChat.username
+            chatContainer.append(chatNameDiv,messagesContainer,messageForm)
+            fetchMessages(selectedChat)
+            socket.emit('join',selectedChat.id)
+        }
+        
+        function fetchMessages(selectedChat){
+            if(messageHistory.length==0) return 
+            messages.innerHTML = ''
+            let chatMessages = messageHistory.filter(message => 
+                message.chatRoom === selectedChat.id
+            )
+            chatMessages.forEach(message => {
+                let item = document.createElement('li')
+                if(message.sender === selectedChat.username){
+                    item.style = 'justify-content:flex-start'
+                    let messageSpan = document.createElement('span')
+                    messageSpan.id = 'receivermessage'
+                    messageSpan.textContent = message.content
+                    item.appendChild(messageSpan)
+                }else{
+                    item.style = 'justify-content:flex-end'
+                    let messageSpan = document.createElement('span')
+                    messageSpan.id = 'sendermessage'
+                    messageSpan.textContent = message.content
+                    item.appendChild(messageSpan)
+                }
+                // console.log(message )
+                messages.appendChild(item)
+            })
+        }
+
+        
+        userForm.addEventListener('submit',(e)=>{
+            e.preventDefault()
+            if(userNameInput.value){
+                let user = {}
+                user.username = userNameInput.value
+                user.id = new Date().getTime()
+                // console.log('username : ',userNameInput.value)
+                userNameInput.value = ""
+                userModal.hide()
+                chats.push(user)
+                let newChat = document.createElement('li')
+                newChat.textContent = user.username
+                chatList.appendChild(newChat) 
+                console.log(chats)
+                localStorage.setItem('chatList',JSON.stringify(chats))
+            }
+        })
+
+
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            if (formInput.value) {
+                let message = {}
+                message.id = new Date().getTime()
+                message.chatRoom = selectedChat.id
+                message.sender = 'home-user'
+                message.reciever = selectedChat.username
+                message.content = formInput.value
+                // console.log(message)
+                messageHistory.push(message)
+                fetchMessages(selectedChat)
+                localStorage.setItem('messageHistory',JSON.stringify(messageHistory))
+                // socket.emit('chat message', formInput.value)
+                formInput.value = ""
+            }
+        })
+
+
+        socket.on('chat message', (message) => {
+            let item = document.createElement('li')
+            item.textContent = message
+            messages.appendChild(item)
+            window.scrollTo(0, document.body.scrollHeight)
+        })
+
+    </script>
+
+    <!-- <script src="index.js"></script> -->
+</body>
+
+</html>
