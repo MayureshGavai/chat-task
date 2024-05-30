@@ -7,11 +7,11 @@ const app = express()
 const PORT = 3000
 const server = http.createServer(app)
 const io = new Server(server)
-const __dirname = path.dirname('index2.html')
+const __dirname = path.dirname('index.html')
 
 
 app.get('/',(req,res)=>{
-    res.sendFile('/index2.html',{root:__dirname})
+    res.sendFile('/index.html',{root:__dirname})
 })
 
 server.listen(PORT,()=>{
@@ -21,14 +21,15 @@ server.listen(PORT,()=>{
 io.on("connection",(socket)=>{
     console.log('a user connected');
     socket.on('chat message',(message)=>{
-        console.log('message: ',message)
         io.emit('chat message',message)
+        // console.log('message: ',message)
     })
 
-    socket.on('join',(userId)=>{
-        socket.join(userId)
-        console.log('user joined room : ',userId)
+    socket.on('new room',(room)=>{
+        io.emit('new room',room)
+        console.log('new room created: ',room.roomname)
     })
+
 
     socket.on('disconnect',()=>{
         console.log('user disconnected')
